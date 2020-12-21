@@ -1,3 +1,22 @@
+# Metropolis (by RiMillo)
+
+A customized version of the [`metropolis`](https://github.com/matze/mtheme) `beamer`
+theme. The main changes are:
+* Colors: Added a dark blue (for blocks) and a dark white (normalback ground)
+* Blocks:
+  * If fill option is given, the background are computed with respect to the related color (block, alerted example)
+  * Now it is possible to leave an empty title
+* Titlepage:
+  * Title inside a block
+  * Now graphic is under the separation bar, on the right-hand side
+* Frame subtitle: added
+* Fix a weird bug which left `{alerted,example,block} text` colors undefined until the related block is used
+* Modified some lengths
+
+The original `README.md` is left below.
+
+--------------------------------------------------------------------------------
+
 ## Metropolis
 
 

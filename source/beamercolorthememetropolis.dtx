@@ -81,6 +81,8 @@
 \definecolor{mDarkTeal}{HTML}{23373b}
 \definecolor{mLightBrown}{HTML}{EB811B}
 \definecolor{mLightGreen}{HTML}{14B03D}
+\definecolor{mDarkWhite}{HTML}{FAFAFA} % black!2, RGB=250,250,250
+\definecolor{mDarkBlue}{HTML}{003ECC}
 %    \end{macrocode}
 %
 %
@@ -88,12 +90,12 @@
 % \subsubsection{Base styles}
 %
 % All colors in \themename are derived from the definitions of |normal text|,
-% |alerted text|, and |example text|.
+% |alerted text|, |block text| and |example text|.
 %
 %    \begin{macrocode}
 \newcommand{\metropolis@colors@dark}{
   \setbeamercolor{normal text}{%
-    fg=black!2,
+    fg=mDarkWhite,
     bg=mDarkTeal
   }
   \usebeamercolor[fg]{normal text}
@@ -101,7 +103,7 @@
 \newcommand{\metropolis@colors@light}{
   \setbeamercolor{normal text}{%
     fg=mDarkTeal,
-    bg=black!2
+    bg=mDarkWhite
   }
 }
 \setbeamercolor{alerted text}{%
@@ -109,6 +111,9 @@
 }
 \setbeamercolor{example text}{%
   fg=mLightGreen
+}
+\setbeamercolor{block text}{%
+  fg=mDarkBlue
 }
 %    \end{macrocode}
 %
@@ -143,6 +148,12 @@
 \setbeamercolor{frametitle}{%
   use=palette primary,
   parent=palette primary
+}
+\setbeamercolor{framesubtitle}{%
+  use=frametitle,
+  parent=frametitle,
+  fg=frametitle.fg,
+  bg=frametitle.bg!75!frametitle.fg
 }
 %    \end{macrocode}
 %
@@ -181,37 +192,55 @@
 %    \begin{macrocode}
 \newcommand{\metropolis@block@transparent}{
   \setbeamercolor{block title}{%
-    use=normal text,
-    fg=normal text.fg,
+    use=block text,
+    fg=block text.fg,
     bg=
   }
   \setbeamercolor{block body}{
+    bg=
+  }
+  \setbeamercolor{block title alerted}{%
+    bg=
+  }
+  \setbeamercolor{block body alerted}{
+    bg=
+  }
+  \setbeamercolor{block title example}{%
+    bg=
+  }
+  \setbeamercolor{block body example}{
     bg=
   }
 }
 \newcommand{\metropolis@block@fill}{
   \setbeamercolor{block title}{%
-    use=normal text,
-    fg=normal text.fg,
-    bg=normal text.bg!80!fg
+    use={block text, normal text},%
+    bg=normal text.bg!75!block text.fg,%
+    fg=block text.fg
   }
   \setbeamercolor{block body}{
-    use={block title, normal text},
-    bg=block title.bg!50!normal text.bg
+    use={block title, normal text},%
+    bg=block title.bg!75!normal text.bg
+  }
+  \setbeamercolor{block title alerted}{%
+      use={normal text, alerted text},%
+      bg=normal text.bg!75!alerted text.fg,%
+      fg=alerted text.fg
+  }
+  \setbeamercolor{block title example}{%
+      use={example text, normal text},%
+      bg=normal text.bg!75!example text.fg,%
+      fg=example text.fg
+  }
+  \setbeamercolor{block body alerted}{%
+      use={block title alerted, normal text},%
+      bg=block title alerted.bg!50!normal text.bg
+  }
+  \setbeamercolor{block body example}{%
+      use={block title example, normal text},%
+      bg=block title example.bg!50!normal text.bg
   }
 }
-\setbeamercolor{block title alerted}{%
-    use={block title, alerted text},
-    bg=block title.bg,
-    fg=alerted text.fg
-}
-\setbeamercolor{block title example}{%
-    use={block title, example text},
-    bg=block title.bg,
-    fg=example text.fg
-}
-\setbeamercolor{block body alerted}{use=block body, parent=block body}
-\setbeamercolor{block body example}{use=block body, parent=block body}
 %    \end{macrocode}
 %
 % Footnotes

@@ -173,6 +173,26 @@
   \nolinebreak%
   \metropolis@frametitlestrut@end%
   \end{beamercolorbox}%
+%    \end{macrocode}
+%
+% Now subtitle.
+%
+%    \begin{macrocode}
+  \ifx\insertframesubtitle\@empty\else%
+  \nointerlineskip%
+  \begin{beamercolorbox}[%
+      wd=\paperwidth,%
+      sep=0pt,%
+      leftskip=1.5\metropolis@frametitle@padding,%
+      rightskip=\metropolis@frametitle@padding,%
+    ]{framesubtitle}%
+  \rule{0pt}{1.25\metropolis@frametitle@padding}%
+  \usebeamerfont{framesubtitle}%
+  \usebeamercolor[fg]{framesubtitle}%
+  \insertframesubtitle%
+  \rule[-0.5\metropolis@frametitle@padding]{0pt}{.5\metropolis@frametitle@padding}%
+  \end{beamercolorbox}%
+  \fi%
 }
 \setbeamertemplate{frametitle continuation}{%
   \usebeamerfont{frametitle}
@@ -188,7 +208,7 @@
 %    \begin{macrocode}
 \newlength{\metropolis@progressinheadfoot}
 \newlength{\metropolis@progressinheadfoot@linewidth}
-\setlength{\metropolis@progressinheadfoot@linewidth}{0.4pt}
+\setlength{\metropolis@progressinheadfoot@linewidth}{2pt}
 \setbeamertemplate{progress bar in head/foot}{
   \nointerlineskip
   \setlength{\metropolis@progressinheadfoot}{%

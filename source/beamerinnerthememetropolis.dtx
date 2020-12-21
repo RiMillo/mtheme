@@ -97,17 +97,15 @@
 % \subsubsection{Title page}
 %
 % \begin{macro}{title page}
-% Template for the title page. Each element is only typset if it is defined
+% Template for the title page. Each element is only typeset if it is defined
 % by the user. If |\subtitle| is empty, for example, it won't leave a blank
 % space on the title slide.
 %    \begin{macrocode}
 \setbeamertemplate{title page}{
-  \begin{minipage}[b][\paperheight]{\textwidth}
-    \ifx\inserttitlegraphic\@empty\else\usebeamertemplate*{title graphic}\fi
-    \vfill%
-    \ifx\inserttitle\@empty\else\usebeamertemplate*{title}\fi
-    \ifx\insertsubtitle\@empty\else\usebeamertemplate*{subtitle}\fi
-    \usebeamertemplate*{title separator}
+  \vskip 0pt plus 1filll
+  \ifx\inserttitle\@empty\else\usebeamertemplate*{title}\fi
+  \ifx\insertsubtitle\@empty\else\usebeamertemplate*{subtitle}\fi
+  \usebeamertemplate*{title separator}
 %    \end{macrocode}
 %
 % Beamer's definition of |\insertauthor| is always nonempty, so we have
@@ -117,12 +115,29 @@
 % Stack Exchange question}.
 %
 %    \begin{macrocode}
+  \begin{minipage}[T]{.70\textwidth}
     \ifx\beamer@shortauthor\@empty\else\usebeamertemplate*{author}\fi
     \ifx\insertdate\@empty\else\usebeamertemplate*{date}\fi
     \ifx\insertinstitute\@empty\else\usebeamertemplate*{institute}\fi
-    \vfill
-    \vspace*{1mm}
+  \end{minipage}\hfill%
+  \begin{minipage}[T]{.28\textwidth}
+    \ifx\inserttitlegraphic\@empty\else\usebeamertemplate*{title graphic}\fi
   \end{minipage}
+  \vskip 0pt plus 1filll
+%    \end{macrocode}
+% Dummy use of text so that they are "defined" and usable even if their
+% related environment is not used before.
+%    \begin{macrocode}
+  {
+    \usebeamercolor[fg]{alerted text}\usebeamercolor[bg]{alerted text}
+    \usebeamercolor[fg]{example text}\usebeamercolor[bg]{example text}
+    \usebeamercolor[fg]{block title}\usebeamercolor[bg]{block title}
+    \usebeamercolor[fg]{block body}\usebeamercolor[bg]{block body}
+    \usebeamercolor[fg]{block title alerted}\usebeamercolor[bg]{block title alerted}
+    \usebeamercolor[fg]{block body alerted}\usebeamercolor[bg]{block body alerted}
+    \usebeamercolor[fg]{block title example}\usebeamercolor[bg]{block title example}
+    \usebeamercolor[fg]{block body example}\usebeamercolor[bg]{block body example}
+  }
 }
 %    \end{macrocode}
 % \end{macro}%
@@ -154,15 +169,12 @@
 % \end{macro}
 %
 % \begin{macro}{title graphic}
-%   Set the title graphic in a zero-height box, so it doesn't change the
-%   position of other elements.
 %    \begin{macrocode}
 \setbeamertemplate{title graphic}{
-  \vbox to 0pt {
+  \begin{flushright}
     \vspace*{2em}
     \inserttitlegraphic%
-  }%
-  \nointerlineskip%
+  \end{flushright}
 }
 %    \end{macrocode}
 % \end{macro}
@@ -171,9 +183,11 @@
 %   Set the title on the title page.
 %    \begin{macrocode}
 \setbeamertemplate{title}{
-  \raggedright%
-  \linespread{1.0}%
-  \inserttitle%
+  \begin{beamercolorbox}[rounded=false,wd=\textwidth,colsep*=2ex]{block body}
+    \centering
+    \linespread{1.0}%
+    \inserttitle%
+  \end{beamercolorbox}
   \par%
   \vspace*{0.5em}
 }
@@ -255,11 +269,11 @@
   \begin{center}
     \usebeamercolor[fg]{section title}
     \usebeamerfont{section title}
-    \insertsectionhead\par
-    \ifx\insertsubsectionhead\@empty\else
+    \insertsection\par
+    \ifx\insertsubsection\@empty\else
       \usebeamercolor[fg]{subsection title}
       \usebeamerfont{subsection title}
-      \insertsubsectionhead
+      \insertsubsection
     \fi
   \end{center}
 }
@@ -269,13 +283,13 @@
     \raggedright
     \usebeamercolor[fg]{section title}
     \usebeamerfont{section title}
-    \insertsectionhead\\[-1ex]
+    \insertsection\\[-1ex]
     \usebeamertemplate*{progress bar in section page}
     \par
-    \ifx\insertsubsectionhead\@empty\else%
+    \ifx\insertsubsection\@empty\else%
       \usebeamercolor[fg]{subsection title}%
       \usebeamerfont{subsection title}%
-      \insertsubsectionhead
+      \insertsubsection
     \fi
   \end{minipage}
   \par
@@ -388,6 +402,16 @@
   \setlength{\parskip}{0pt}
 %    \end{macrocode}
 %
+%    If there is no title for the block, do not print the title ribbon.
+%
+%    \begin{macrocode}
+  \ifx\insertblocktitle\@empty%
+  {
+    \vskip 0pt plus \metropolis@blockadjust
+  }
+  \else{
+%    \end{macrocode}
+%
 %    If a background color is defined for the block title or body, we need to
 %    add a little bit of padding to the corresponding box. Ideally, this would
 %    be accomplished by setting |colsep=0.75ex|, which is intended to add
@@ -406,11 +430,11 @@
 %    set a rightskip for a nice ragged-right block title.
 %
 %    \begin{macrocode}
-  \ifbeamercolorempty[bg]{block title#1}{%
-    \begin{beamercolorbox}[rightskip=0pt plus 4em]{block title#1}}{%
-  \ifbeamercolorempty[bg]{block title}{%
-    \begin{beamercolorbox}[rightskip=0pt plus 4em]{block title#1}%
-  }%
+    \ifbeamercolorempty[bg]{block title#1}{%
+      \begin{beamercolorbox}[rightskip=0pt plus 4em]{block title#1}}{%
+    \ifbeamercolorempty[bg]{block title}{%
+      \begin{beamercolorbox}[rightskip=0pt plus 4em]{block title#1}%
+    }%
 %   \end{macrocode}
 %
 %   Otherwise, if the |block title| has a background, we set the padding based
@@ -419,13 +443,13 @@
 %   subtracting |\metropolis@blockadjust| from the top and bottom padding.
 %
 %   \begin{macrocode}
-  {%
-    \begin{beamercolorbox}[
-      sep=\dimexpr\metropolis@blocksep-\metropolis@blockadjust\relax,
-      leftskip=\metropolis@blockadjust,
-      rightskip=\dimexpr\metropolis@blockadjust plus 4em\relax
-    ]{block title#1}%
-  }}%
+    {%
+      \begin{beamercolorbox}[
+        sep=\dimexpr\metropolis@blocksep-\metropolis@blockadjust\relax,
+        leftskip=\metropolis@blockadjust,
+        rightskip=\dimexpr\metropolis@blockadjust plus 4em\relax
+      ]{block title#1}%
+    }}%
 %   \end{macrocode}
 %
 %   We can now set the contents of the |block title|. The zero-width but
@@ -438,14 +462,16 @@
       \metropolis@strut%
       \insertblocktitle%
       \metropolis@strut%
-  \end{beamercolorbox}%
+    \end{beamercolorbox}%
 %   \end{macrocode}
 %
 %   Next, we typeset the |block body|. This the code is similar to, but simpler
 %   than, the |block title| code since we don't need to adjust for any struts.
 %
 %   \begin{macrocode}
-  \nointerlineskip%
+    \nointerlineskip%
+  } % else
+  \fi
   \ifbeamercolorempty[bg]{block body#1}{%
     \begin{beamercolorbox}[vmode]{block body#1}}{
   \ifbeamercolorempty[bg]{block body}{%
